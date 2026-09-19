@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="end|bottom"
+        android:padding="16dp"
+        android:text="0"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+
+
+    <Button android:id="@+id/btnSin" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="sin" />
+    <Button android:id="@+id/btnCos" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="cos" />
+    <Button android:id="@+id/btnTg" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="tg" />
+    <Button android:id="@+id/btnLn" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="ln" />
+
+
+    <Button android:id="@+id/btnLog" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="log" />
+    <Button android:id="@+id/btnFact" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="!" />
+    <Button android:id="@+id/btnPower" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="^" />
+    <Button android:id="@+id/btnSqrt" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="√" />
+
+
+    <Button android:id="@+id/btnOpenBracket" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="(" />
+    <Button android:id="@+id/btnCloseBracket" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text=")" />
+    <Button android:id="@+id/btnComma" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="," />
+    <Button android:id="@+id/btnPi" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="π" />
+
+
+    <Button android:id="@+id/btnAC" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="AC" />
+    <Button android:id="@+id/btnDelete" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="⌫" />
+    <Button android:id="@+id/btnPercent" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="%" />
+    <Button android:id="@+id/btnDivide" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="÷" />
+
+
+    <Button android:id="@+id/btn7" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="7" />
+    <Button android:id="@+id/btn8" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="8" />
+    <Button android:id="@+id/btn9" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="9" />
+    <Button android:id="@+id/btnMultiply" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="×" />
+
+
+    <Button android:id="@+id/btn4" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="4" />
+    <Button android:id="@+id/btn5" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="5" />
+    <Button android:id="@+id/btn6" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="6" />
+    <Button android:id="@+id/btnMinus" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="-" />
+
+
+    <Button android:id="@+id/btn1" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="1" />
+    <Button android:id="@+id/btn2" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="2" />
+    <Button android:id="@+id/btn3" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="3" />
+    <Button android:id="@+id/btnPlus" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="+" />
+
+
+    <Button android:id="@+id/btnHistory" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="HIST" />
+    <Button android:id="@+id/btn0" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="0" />
+    <Button android:id="@+id/btnDot" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="." />
+    <Button android:id="@+id/btnEqual" style="@style/CalcButton" android:layout_width="0dp" android:layout_height="0dp" android:text="=" />
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:flow_horizontalGap="4dp"
+        app:flow_maxElementsWrap="4"
+        app:flow_verticalGap="4dp"
+        app:flow_wrapMode="aligned"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:constraint_referenced_ids="
+            btnSin, btnCos, btnTg, btnLn,
+            btnLog, btnFact, btnPower, btnSqrt,
+            btnOpenBracket, btnCloseBracket, btnComma, btnPi,
+            btnAC, btnDelete, btnPercent, btnDivide,
+            btn7, btn8, btn9, btnMultiply,
+            btn4, btn5, btn6, btnMinus,
+            btn1, btn2, btn3, btnPlus,
+            btnHistory, btn0, btnDot, btnEqual" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
