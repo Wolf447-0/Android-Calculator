@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
             String buttonText = button.getText().toString();
             if (display.getText().toString().charAt(0) == '0') {
                 display.setText(buttonText);
-            }
-            else display.append(buttonText);
+            } else display.append(buttonText);
 
         };
 
@@ -41,101 +40,189 @@ public class MainActivity extends AppCompatActivity {
             int id = button.getId();
             String currentStr = display.getText().toString();
 
+
+            switch (buttonText) {
+                case "÷":
+                    buttonText = "/";
+                    break;
+                case "×":
+                    buttonText = "*";
+                    break;
+                case "√":
+                    buttonText = "sqrt(";
+                    break;
+                case "log":
+                    buttonText = "log(";
+                    break;
+                case "sin":
+                    buttonText = "sin(";
+                    break;
+                case "cos":
+                    buttonText = "cos(";
+                    break;
+                case "tg":
+                    buttonText = "tg(";
+                    break;
+                case "ln":
+                    buttonText = "ln(";
+                    break;
+            }
+
+            if (display.getText().toString().charAt(0) == '0') {
+                if (!isAction(id)) {
+                    display.setText(buttonText);
+                    return;
+                }
+                else return;
+            }
+
             if (id == R.id.btnEqual) {
-                if (!(currentStr.equals("0") || checkLastAction(currentStr))){
+                if (!(currentStr.equals("0") || checkLastAction(currentStr, id))) {
                     try {
                         double res = calculate(currentStr);
                         display.setText(String.valueOf(res));
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         display.setText("Error");
                     }
                 }
                 return;
             }
 
-            if (id == R.id.btnAC){
+
+            if (id == R.id.btnAC) {
                 display.setText("0");
                 return;
             }
 
             if (id == R.id.btnDelete) {
-                display.setText(currentStr.substring(0,currentStr.length()-1));
-                if (display.getText().toString().isEmpty()){
+                display.setText(currentStr.substring(0, currentStr.length() - 1));
+                if (display.getText().toString().isEmpty()) {
                     display.setText("0");
                 }
                 return;
             }
 
-            switch (buttonText) {
-                case "÷":  buttonText = "/"; break;
-                case "×":  buttonText = "*"; break;
-                case "√":  buttonText = "sqrt("; break;
-                case "log": buttonText = "log("; break;
-                case "sin": buttonText = "sin("; break;
-                case "cos": buttonText = "cos("; break;
-                case "tg": buttonText = "tg("; break;
-                case "ln": buttonText = "ln("; break;
+
+
+            if(isAction(id)) {
+                if (checkLastAction(currentStr, id)) {
+                   return;
+                }
+                else display.append(buttonText);
             }
+           else if(isFunction(id)){
+                char lastChar = currentStr.charAt(currentStr.length() - 1);
 
-
-             if (!checkLastAction(currentStr)) {
+                if(id == R.id.btnFact || id == R.id.btnPower){
+                    if(Character.isDigit(lastChar) || lastChar == ')'){
+                        display.append(buttonText);
+                    } else if (lastChar == '.' || lastChar == ',') {
+                        return;
+                    }
+                }
+                if(Character.isDigit(lastChar) || lastChar == '.'){
+                    return;
+                }
                 display.append(buttonText);
             }
+
+
 
 
         };
 
         btnEqual.setOnClickListener(onClickListenerActionBtn);
 
-      setListeers(onClickListenerNumberBtn,onClickListenerActionBtn);
-
+        setListeers(onClickListenerNumberBtn, onClickListenerActionBtn);
 
 
     }
 
-    double calculate(String currentStr){
+    boolean checkLastSForD(String currentStr){
+        for (int i = 0; i < 10; i++) {
+            if(currentStr.charAt(currentStr.length()-1) == (char)i){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    double calculate(String currentStr) {
         Expression expression = new Expression(currentStr);
         return expression.calculate();
     }
 
-    int[] arrayActionId(){
+    int[] arrayActionId() {
         int[] actionsId = new int[]{
                 R.id.btnPlus, R.id.btnMinus, R.id.btnMultiply, R.id.btnDivide,
-                R.id.btnSin, R.id.btnCos, R.id.btnTg, R.id.btnLn, R.id.btnLog,
-                R.id.btnFact, R.id.btnPower, R.id.btnSqrt, R.id.btnDot,
-                R.id.btnOpenBracket, R.id.btnCloseBracket, R.id.btnComma, R.id.btnPi,
+                R.id.btnDot,
+                R.id.btnOpenBracket, R.id.btnCloseBracket, R.id.btnComma,
                 R.id.btnAC, R.id.btnDelete
         };
         return actionsId;
     }
-    
-    boolean checkLastAction(String currentStr){
-       char lastAction = currentStr.charAt(currentStr.length()-1);
-       Button button;
-       for(int id: arrayActionId()){
-           button = findViewById(id);
-           if (lastAction == button.getText().toString().charAt(button.getText().toString().length()-1)){
-               return true;
-           }
-       }
-       return false;
+
+    int[] arrayFunctionId() {
+        int[] actionsId = new int[]{
+                R.id.btnSin, R.id.btnCos, R.id.btnTg, R.id.btnLn, R.id.btnLog,
+                R.id.btnFact, R.id.btnPower, R.id.btnSqrt, R.id.btnPi,
+
+        };
+        return actionsId;
+    }
+
+    boolean isAction(int actID) {
+        for (int id : arrayActionId()) {
+            if (actID == id || actID == R.id.btnEqual) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean isFunction(int actID) {
+        for (int id : arrayFunctionId()) {
+            if (actID == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean checkLastAction(String currentStr, int id) {
+        char lastAction = currentStr.charAt(currentStr.length() - 1);
+        char[] lastAct = new char[]{'*','-','+','/','('};
+
+        if (isAction(id)) {
+            for (char i : lastAct) {
+
+                if (lastAction == i) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
     void setListeers(View.OnClickListener listerNum, View.OnClickListener listenerAct) {
-        int[] inputNumberButtonIds = new int[] {
+        int[] inputNumberButtonIds = new int[]{
                 R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4,
                 R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9
         };
 
         int[] inputActionButtonIds = arrayActionId();
+        int[] inputFunctionButtonIds = arrayFunctionId();
 
         for (int id : inputNumberButtonIds) {
             findViewById(id).setOnClickListener(listerNum);
         }
 
         for (int id : inputActionButtonIds) {
+            findViewById(id).setOnClickListener(listenerAct);
+        }
+
+        for (int id : inputFunctionButtonIds) {
             findViewById(id).setOnClickListener(listenerAct);
         }
     }
