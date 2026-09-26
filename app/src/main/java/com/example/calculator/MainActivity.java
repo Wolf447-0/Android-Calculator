@@ -1,5 +1,6 @@
 package com.example.calculator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
         TextView display = findViewById(R.id.tvDisplay);
         Button btnEqual = findViewById(R.id.btnEqual);
+        Button btnHistory = findViewById(R.id.btnHistory);
+
+        History history = new History();
+
+        Intent intent = new Intent(this, HistoryActivity.class);
 
 
         View.OnClickListener onClickListenerNumberBtn = v -> {
@@ -39,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             String buttonText = button.getText().toString();
             int id = button.getId();
             String currentStr = display.getText().toString();
-
+            char lastChar = currentStr.charAt(currentStr.length() - 1);
 
             switch (buttonText) {
                 case "÷":
@@ -79,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.btnEqual) {
                 if (!(currentStr.equals("0") || checkLastAction(currentStr, id))) {
                     try {
+                        history.addLine(currentStr);
                         double res = calculate(currentStr);
                         display.setText(String.valueOf(res));
+                        history.addLine(String.valueOf(res));
                     } catch (Exception ex) {
                         display.setText("Error");
                     }
@@ -110,13 +118,32 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else display.append(buttonText);
             }
+
+            else if(id == R.id.btnOpenBracket){
+                if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/' || lastChar == '(') {
+                    display.append(buttonText);
+                }
+            }
+
+            else if(id == R.id.btnCloseBracket){
+                int openBrackets = countChar(currentStr, '(');
+                int closeBrackets = countChar(currentStr, ')');
+
+                boolean hasUnclosedBracket = openBrackets > closeBrackets;
+                boolean isValidLastChar = Character.isDigit(lastChar) || lastChar == ')'
+                        || lastChar == '!' || lastChar == 'π';
+
+                if (hasUnclosedBracket && isValidLastChar) {
+                    display.append(")");
+                }
+            }
+
            else if(isFunction(id)){
-                char lastChar = currentStr.charAt(currentStr.length() - 1);
 
                 if(id == R.id.btnFact || id == R.id.btnPower){
                     if(Character.isDigit(lastChar) || lastChar == ')'){
                         display.append(buttonText);
-                    } else if (lastChar == '.' || lastChar == ',') {
+                    } else if (lastChar == '.' || lastChar == '(') {
                         return;
                     }
                 }
@@ -126,16 +153,29 @@ public class MainActivity extends AppCompatActivity {
                 display.append(buttonText);
             }
 
-
-
-
         };
+
+        btnHistory.setOnClickListener( v ->
+        {
+            intent.putExtra(History.class.getSimpleName(),history);
+            startActivity(intent);
+        });
 
         btnEqual.setOnClickListener(onClickListenerActionBtn);
 
         setListeers(onClickListenerNumberBtn, onClickListenerActionBtn);
 
 
+    }
+
+    int countChar(String str, char ch) {
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ch) {
+                count++;
+            }
+        }
+        return count;
     }
 
     boolean checkLastSForD(String currentStr){
@@ -156,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         int[] actionsId = new int[]{
                 R.id.btnPlus, R.id.btnMinus, R.id.btnMultiply, R.id.btnDivide,
                 R.id.btnDot,
-                R.id.btnOpenBracket, R.id.btnCloseBracket, R.id.btnComma,
+                R.id.btnComma,
                 R.id.btnAC, R.id.btnDelete
         };
         return actionsId;
@@ -213,6 +253,9 @@ public class MainActivity extends AppCompatActivity {
 
         int[] inputActionButtonIds = arrayActionId();
         int[] inputFunctionButtonIds = arrayFunctionId();
+
+        findViewById(R.id.btnOpenBracket).setOnClickListener(listenerAct);
+        findViewById(R.id.btnCloseBracket).setOnClickListener(listenerAct);
 
         for (int id : inputNumberButtonIds) {
             findViewById(id).setOnClickListener(listerNum);
