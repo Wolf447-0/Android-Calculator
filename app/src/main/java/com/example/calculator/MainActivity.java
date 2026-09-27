@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         history.addLine(currentStr);
                         double res = calculate(currentStr);
                         display.setText(String.valueOf(res));
-                        history.addLine(String.valueOf(res));
+                        history.addLine("Ответ: " + String.valueOf(res));
                     } catch (Exception ex) {
                         display.setText("Error");
                     }
