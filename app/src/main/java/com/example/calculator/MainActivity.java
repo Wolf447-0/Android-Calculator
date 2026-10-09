@@ -86,9 +86,19 @@ public class MainActivity extends AppCompatActivity {
                 if (!(currentStr.equals("0") || checkLastAction(currentStr, id))) {
                     try {
                         history.addLine(currentStr);
-                        double res = calculate(currentStr);
-                        display.setText(String.valueOf(res));
-                        history.addLine("Ответ: " + String.valueOf(res));
+                        double res_double = calculate(currentStr);
+                        if(res_double == Math.floor(res_double)
+                                && !Double.isInfinite(res_double)
+                                && !Double.isNaN(res_double)){
+                            int res_int = (int)res_double;
+                            display.setText(String.valueOf(res_int));
+                            history.addLine("Ответ: " + String.valueOf(res_int));
+                        }
+                        else{
+                            display.setText(String.valueOf(res_double));
+                            history.addLine("Ответ: " + String.valueOf(res_double));
+                        }
+
                     } catch (Exception ex) {
                         display.setText("Error");
                     }
