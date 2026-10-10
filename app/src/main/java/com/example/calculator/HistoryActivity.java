@@ -27,7 +27,7 @@ public class HistoryActivity extends AppCompatActivity {
         ListView history_list = findViewById(R.id.history);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, listsHistory);
+                R.layout.list_item_1, R.id.textViewItem, listsHistory);
 
         history_list.setAdapter(adapter);
     }

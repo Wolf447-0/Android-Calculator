@@ -14,6 +14,12 @@ import org.mariuszgromada.math.mxparser.License;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String currentStr;
+    private final static String currentStrKey = "CURRENT_STRING";
+    private final static String historyKey = "HISTORY";
+    private History history;
+    private TextView display;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        TextView display = findViewById(R.id.tvDisplay);
+        display = findViewById(R.id.tvDisplay);
         Button btnEqual = findViewById(R.id.btnEqual);
         Button btnHistory = findViewById(R.id.btnHistory);
 
-        History history = new History();
+        history = new History();
 
         Intent intent = new Intent(this, HistoryActivity.class);
 
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             Button button = (Button) v;
             String buttonText = button.getText().toString();
             int id = button.getId();
-            String currentStr = display.getText().toString();
+            currentStr = display.getText().toString();
             char lastChar = currentStr.charAt(currentStr.length() - 1);
 
             switch (buttonText) {
@@ -126,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                 if (checkLastAction(currentStr, id)) {
                    return;
                 }
+                else if (id == R.id.btnDot && hasDotInCurrentNumber(currentStr)) {
+                    return;
+                }
                 else display.append(buttonText);
             }
 
@@ -173,9 +182,25 @@ public class MainActivity extends AppCompatActivity {
 
         btnEqual.setOnClickListener(onClickListenerActionBtn);
 
-        setListeers(onClickListenerNumberBtn, onClickListenerActionBtn);
+        setListers(onClickListenerNumberBtn, onClickListenerActionBtn);
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(currentStrKey, display.getText().toString());
+        outState.putSerializable(historyKey,history);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        history = (History) savedInstanceState.getSerializable(historyKey);
+        currentStr = savedInstanceState.getString(currentStrKey);
+        display.setText(currentStr);
     }
 
     int countChar(String str, char ch) {
@@ -241,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean checkLastAction(String currentStr, int id) {
         char lastAction = currentStr.charAt(currentStr.length() - 1);
-        char[] lastAct = new char[]{'*','-','+','/','('};
+        char[] lastAct = new char[]{'*','-','+','/','(','.',','};
 
         if (isAction(id)) {
             for (char i : lastAct) {
@@ -254,8 +279,15 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private boolean hasDotInCurrentNumber(String currentStr) {
+        if (currentStr == null || currentStr.isEmpty()) return false;
+        String[] parts = currentStr.split("[+\\-*/(]");
+        String currentNumber = parts[parts.length - 1];
+        return currentNumber.contains(".");
+    }
 
-    void setListeers(View.OnClickListener listerNum, View.OnClickListener listenerAct) {
+
+    void setListers(View.OnClickListener listerNum, View.OnClickListener listenerAct) {
         int[] inputNumberButtonIds = new int[]{
                 R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4,
                 R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9
